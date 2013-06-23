@@ -3,6 +3,8 @@
   <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkAction" id="actCatDel"/>
   <object class="GtkAction" id="actCatNew"/>
+  <object class="GtkAction" id="actSnipCopy"/>
+  <object class="GtkAction" id="actSnipDelete"/>
   <object class="GtkAction" id="actSnipNew"/>
   <object class="GtkAction" id="actSnipSave"/>
   <object class="GtkListStore" id="lsCat">
@@ -15,7 +17,9 @@
   </object>
   <object class="GtkListStore" id="lsSnipps">
     <columns>
-      <!-- column-name Name -->
+      <!-- column-name id -->
+      <column type="gint"/>
+      <!-- column-name name -->
       <column type="gchararray"/>
     </columns>
   </object>
@@ -129,6 +133,20 @@
                     <property name="homogeneous">True</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkToolButton" id="toolbutton3">
+                    <property name="use_action_appearance">False</property>
+                    <property name="related_action">actSnipDelete</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Delete</property>
+                    <property name="use_underline">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -153,7 +171,7 @@
                         <property name="can_focus">True</property>
                         <property name="model">lsSnipps</property>
                         <child internal-child="selection">
-                          <object class="GtkTreeSelection" id="treeview-selection2"/>
+                          <object class="GtkTreeSelection" id="selEnt"/>
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn1">
@@ -161,7 +179,7 @@
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext1"/>
                               <attributes>
-                                <attribute name="text">0</attribute>
+                                <attribute name="text">1</attribute>
                               </attributes>
                             </child>
                           </object>
@@ -191,6 +209,20 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Save</property>
+                            <property name="use_underline">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="toolbutton2">
+                            <property name="use_action_appearance">False</property>
+                            <property name="related_action">actSnipCopy</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Copy</property>
                             <property name="use_underline">True</property>
                           </object>
                           <packing>
@@ -256,7 +288,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="entry1">
+                              <object class="GtkEntry" id="snipName">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="hexpand">True</property>
@@ -270,7 +302,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="entry2">
+                              <object class="GtkEntry" id="snipLang">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="hexpand">True</property>
@@ -284,7 +316,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="entry3">
+                              <object class="GtkEntry" id="snipTags">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="hexpand">True</property>
@@ -305,7 +337,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkTextView" id="textview1">
+                          <object class="GtkTextView" id="snipCode">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                           </object>
