@@ -1,6 +1,7 @@
 #!/usr/bin/python2
 
 from gi.repository import Gtk
+from dataprovider import *
 
 class HelloWorld:
 
@@ -23,6 +24,9 @@ class HelloWorld:
 		actSnipNew.connect("activate", self.snipNew)
 		self.window.connect("delete-event", self.destroy)
 		self.window.show()
+
+		self.db = DataProvider()
+		self.db.showCategories()
 		
 
 	def main(self):
