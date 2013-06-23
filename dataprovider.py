@@ -27,6 +27,10 @@ class DataProvider:
 		self.db.execute("INSERT INTO categories (name) VALUES (?)", (text,))
 		self.db.commit()
 
+	def catDel(self, id):
+		self.db.execute("DELETE FROM categories WHERE id = ?", (id,))
+		self.db.commit()
+
 	def __del__(self):
 		self.db.close()
 

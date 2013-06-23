@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkAction" id="actCatDel"/>
   <object class="GtkAction" id="actCatNew"/>
   <object class="GtkAction" id="actSnipNew"/>
   <object class="GtkAction" id="actSnipSave"/>
@@ -50,6 +51,20 @@
                     <property name="homogeneous">True</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkToolButton" id="toolbutton1">
+                    <property name="use_action_appearance">False</property>
+                    <property name="related_action">actCatDel</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">-</property>
+                    <property name="use_underline">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -65,7 +80,7 @@
                 <property name="vexpand">True</property>
                 <property name="model">lsCat</property>
                 <child internal-child="selection">
-                  <object class="GtkTreeSelection" id="treeview-selection1"/>
+                  <object class="GtkTreeSelection" id="selCat"/>
                 </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="treeviewcolumn2">
