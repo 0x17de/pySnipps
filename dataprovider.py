@@ -6,21 +6,26 @@ class DataProvider:
 		self.initDB()
 
 	def existsTable(self, tablename):
-		res = self.db.execute("SELECT 1 FROM sqlite_master WHERE tbl_name = '%s'" % tablename)
+		res = self.db.execute("SELECT 1 FROM sqlite_master WHERE tbl_name = ?", (tablename,))
 		if (res.fetchone()):
 			return True
 		return False
 
 	def initDB(self):
 		if (not self.existsTable("categories")):
-			self.db.execute("CREATE TABLE 'categories' ( 'id' INTEGER NOT NULL, 'name' TEXT )")
+			self.db.execute("CREATE TABLE 'categories' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT )")
 		if (not self.existsTable("snipps")):
-			self.db.execute("CREATE TABLE 'snipps' ( 'id' INTEGER NOT NULL, 'name' TEXT, 'code' TEXT )")
+			self.db.execute("CREATE TABLE 'snipps' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT, 'code' TEXT )")
 
-	def showCategories(self):
+	def getCategories(self):
+		ret = []
 		for row in self.db.execute("SELECT id, name FROM categories ORDER BY name ASC"):
-			print row
+			ret.append([int(row[0]), row[1]])
+		return ret
 
+	def catAdd(self, text):
+		self.db.execute("INSERT INTO categories (name) VALUES (?)", (text,))
+		self.db.commit()
 
 	def __del__(self):
 		self.db.close()
