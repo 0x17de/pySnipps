@@ -6,9 +6,9 @@ BugTracking and Feature Requests are currently running on http://pysnipps.icetru
 
 Depends on
 ==========
-Sqlite3, GTK3
+Python2, Sqlite3, GTK3
 
 
 How to use
 ==========
-The 'main.py' script has to be run with python2. The project was not tested with python3.
+The 'main.py' script has to be run with python2. The project was tested with python2.7.
