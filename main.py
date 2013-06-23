@@ -24,6 +24,7 @@ class HelloWorld:
 		if res == 0:
 			self.db.catAdd(text)
 			self.refreshCategories()
+			self.catSelChanged()
 
 	def catDel(self, widget):
 		(model, iter) = self.selCat.get_selected()
@@ -35,12 +36,21 @@ class HelloWorld:
 		if res == Gtk.ResponseType.YES:
 			self.db.catDel(id)
 			self.refreshCategories()
+			self.catSelChanged()
 
 	def refreshCategories(self):
 		cat = self.db.getCategories()
 		self.lsCat.clear()
 		for c in cat:
 			self.lsCat.append(c)
+
+	def catSelChanged(self, widget=None):
+		(model, iter) = self.selCat.get_selected()
+		if iter is None:
+			self.selCatID = None
+		else:
+			id = model.get_value(iter, 0)
+			self.selCatID = id
 
 	def __init__(self):
 		builder = Gtk.Builder()
@@ -56,6 +66,7 @@ class HelloWorld:
 
 		self.lsCat = builder.get_object("lsCat")
 		self.selCat = builder.get_object("selCat")
+		self.selCat.connect("changed", self.catSelChanged)
 		actCatNew = builder.get_object("actCatNew")
 		actCatNew.connect("activate", self.catNew)
 		actCatDel = builder.get_object("actCatDel")
@@ -66,6 +77,7 @@ class HelloWorld:
 		actSnipNew.connect("activate", self.snipNew)
 
 		self.refreshCategories()
+		self.catSelChanged()
 
 		
 
