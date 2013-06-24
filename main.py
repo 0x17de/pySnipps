@@ -1,5 +1,6 @@
 #!/usr/bin/python2
 
+import sys
 from gi.repository import Gtk, Gdk
 from dataprovider import *
 
@@ -50,15 +51,20 @@ class SnippsGUI:
 		if snip is None:
 			self.snipName.set_text("")
 			self.snipCode.get_buffer().set_text("")
+			self.snipLang.set_text("")
+			self.snipTags.set_text("")
 		else:
 			self.snipName.set_text(snip[1])
 			self.snipCode.get_buffer().set_text(snip[2])
+			self.snipLang.set_text(snip[3])
+			self.snipTags.set_text(", ".join(snip[4]))
 
 	def snipSave(self, widget=None):
 		if not self.selCatID is None:
 			buf = self.snipCode.get_buffer()
-			text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), True)
-			self.db.snipSave(self.selCatID, self.selEntID, self.snipName.get_text(), text)
+			code = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), True)
+			tags = [] # debug, will be filled with split tags
+			self.db.snipSave(self.selCatID, self.selEntID, self.snipName.get_text(), code, self.snipLang.get_text(), tags)
 			self.refreshEntries()
 
 	def snipDel(self, widget=None):
@@ -151,5 +157,10 @@ class SnippsGUI:
 	
 
 if __name__ == "__main__":
-	w = SnippsGUI()
-	w.main()
+	if len(sys.argv) >= 3:
+		if sys.argv[1] == 'dump':
+			db = DataProvider()
+			db.dump(sys.argv[2])
+	else:
+		w = SnippsGUI()
+		w.main()

@@ -19,7 +19,7 @@ class DataProvider:
 		if (not self.tableExists("langs")):
 			self.db.execute("CREATE TABLE 'langs' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT )")
 		if (not self.tableExists("tagnames")):
-			self.db.execute("CREATE TABLE 'tagnames' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT, 'count' INTEGER )")
+			self.db.execute("CREATE TABLE 'tagnames' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT )")
 		if (not self.tableExists("tags")):
 			self.db.execute("CREATE TABLE 'tags' ( 'id' INTEGER PRIMARY KEY, 'tag_id' INTEGER, 'snip_id' INTEGER )")
 
@@ -30,18 +30,31 @@ class DataProvider:
 		return ret
 
 	def snipGet(self, id):
-		res = self.db.execute("SELECT id, name, code FROM snipps WHERE id = ? LIMIT 1", (id,))
+		res = self.db.execute("SELECT snipps.id, snipps.name, code, langs.name FROM snipps LEFT JOIN langs on snipps.lang = langs.id WHERE snipps.id = ? LIMIT 1", (id,))
 		row = res.fetchone()
 		if not row is None:
-			return [int(row[0]), row[1], row[2]]
+			return (int(row[0]), row[1] or '', row[2] or '', row[3] or '', []) # id, name, code, lang, tags
 		return None
 
-	def snipSave(self, catid, id, name, text):
-		if id is None:
-			self.db.execute("INSERT INTO snipps (cat_id, name, code) VALUES (?, ?, ?)", (catid, name, text))
+	def snipSave(self, catid, id, name, code, lang, tags):
+		res = self.db.execute("SELECT id FROM langs WHERE name = ?", (lang,))
+		row = res.fetchone()
+		if row:
+			langid = row[0]
 		else:
-			self.db.execute("UPDATE snipps SET name = ?, code = ? WHERE id = ?", (name, text, id))
+			res = self.db.execute("INSERT INTO langs (name) VALUES(?)", (lang,))
+			langid = res.lastrowid
+
+		if id is None:
+			self.db.execute("INSERT INTO snipps (cat_id, name, code, lang) VALUES (?, ?, ?, ?)", (catid, name, code, langid))
+		else:
+			self.db.execute("UPDATE snipps SET name = ?, code = ?, lang = ? WHERE id = ?", (name, code, langid, id))
 		self.db.commit()
+
+	def dump(self, filename):
+		with open(filename, 'w') as f:
+		    for line in self.db.iterdump():
+		        f.write('%s\n' % line)
 
 	def snipDel(self, id):
 		self.db.execute("DELETE FROM snipps WHERE id = ?", (id,))
