@@ -3,7 +3,7 @@
 from gi.repository import Gtk, Gdk
 from dataprovider import *
 
-class HelloWorld:
+class SnippsGUI:
 
 	def destroy(self, widget, data=None):
 		Gtk.main_quit()
@@ -75,7 +75,7 @@ class HelloWorld:
 			self.refreshEntries()
 
 	def refreshEntries(self):
-		ent = self.db.getEntries(self.selCatID)
+		ent = self.db.entGet(self.selCatID)
 		self.lsSnipps.clear()
 		if not self.selCatID is None:
 			for e in ent:
@@ -91,7 +91,7 @@ class HelloWorld:
 		self.refreshSnipp()
 
 	def refreshCategories(self):
-		cat = self.db.getCategories()
+		cat = self.db.catGet()
 		self.lsCat.clear()
 		for c in cat:
 			self.lsCat.append(c)
@@ -151,5 +151,5 @@ class HelloWorld:
 	
 
 if __name__ == "__main__":
-	hello = HelloWorld()
-	hello.main()
+	w = SnippsGUI()
+	w.main()

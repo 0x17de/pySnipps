@@ -5,19 +5,23 @@ class DataProvider:
 		self.db = sqlite3.connect("local.db")
 		self.initDB()
 
-	def existsTable(self, tablename):
+	def tableExists(self, tablename):
 		res = self.db.execute("SELECT 1 FROM sqlite_master WHERE tbl_name = ?", (tablename,))
 		if (res.fetchone()):
 			return True
 		return False
 
 	def initDB(self):
-		if (not self.existsTable("categories")):
+		if (not self.tableExists("categories")):
 			self.db.execute("CREATE TABLE 'categories' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT )")
-		if (not self.existsTable("snipps")):
-			self.db.execute("CREATE TABLE 'snipps' ( 'id' INTEGER PRIMARY KEY, 'cat_id' INTEGER, 'name' TEXT, 'code' TEXT )")
+		if (not self.tableExists("snipps")):
+			self.db.execute("CREATE TABLE 'snipps' ( 'id' INTEGER PRIMARY KEY, 'cat_id' INTEGER, 'name' TEXT, 'code' TEXT, 'lang' INTEGER )")
+		if (not self.tableExists("tagnames")):
+			self.db.execute("CREATE TABLE 'tagnames' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT, 'count' INTEGER )")
+		if (not self.tableExists("tags")):
+			self.db.execute("CREATE TABLE 'tags' ( 'id' INTEGER PRIMARY KEY, 'tag_id' INTEGER, 'snip_id' INTEGER )")
 
-	def getCategories(self):
+	def catGet(self):
 		ret = []
 		for row in self.db.execute("SELECT id, name FROM categories ORDER BY name ASC"):
 			ret.append([int(row[0]), row[1]])
@@ -45,7 +49,7 @@ class DataProvider:
 		self.db.execute("DELETE FROM snipps WHERE cat_id = ?", (id,))
 		self.db.commit()
 
-	def getEntries(self, id):
+	def entGet(self, id):
 		ret = []
 		for row in self.db.execute("SELECT id, name FROM snipps WHERE cat_id = ? ORDER BY name ASC", (id,)):
 			ret.append([int(row[0]), row[1]])
