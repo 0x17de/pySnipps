@@ -12,3 +12,4 @@ Python2, Sqlite3, GTK3
 How to use
 ==========
 The 'main.py' script has to be run with python2. The project was tested with python2.7.
+Export the database via: ./main.py dump filename.sql
