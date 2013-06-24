@@ -16,6 +16,8 @@ class DataProvider:
 			self.db.execute("CREATE TABLE 'categories' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT )")
 		if (not self.tableExists("snipps")):
 			self.db.execute("CREATE TABLE 'snipps' ( 'id' INTEGER PRIMARY KEY, 'cat_id' INTEGER, 'name' TEXT, 'code' TEXT, 'lang' INTEGER )")
+		if (not self.tableExists("langs")):
+			self.db.execute("CREATE TABLE 'langs' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT )")
 		if (not self.tableExists("tagnames")):
 			self.db.execute("CREATE TABLE 'tagnames' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT, 'count' INTEGER )")
 		if (not self.tableExists("tags")):
