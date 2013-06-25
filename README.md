@@ -1,7 +1,8 @@
 pySnipps
 ========
 Independent and free snippet tool using GTK3 &amp; Sqlite3
-BugTracking and Feature Requests are currently running on http://pysnipps.icetruck.de/
+
+You may submit feature requests at http://pysnipps.icetruck.de/
 
 
 Depends on
