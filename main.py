@@ -59,11 +59,19 @@ class SnippsGUI:
 			self.snipLang.set_text(snip[3])
 			self.snipTags.set_text(", ".join(snip[4]))
 
+	def trimarr(self, arr):
+		res = []
+		for text in arr:
+			res.append(text.strip())
+		return res
+
 	def snipSave(self, widget=None):
 		if not self.selCatID is None:
 			buf = self.snipCode.get_buffer()
 			code = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), True)
-			tags = [] # debug, will be filled with split tags
+			tags = self.trimarr(self.snipTags.get_text().split(","))
+			if not tags is None and tags[0] == '':
+				tags = []
 			self.db.snipSave(self.selCatID, self.selEntID, self.snipName.get_text(), code, self.snipLang.get_text(), tags)
 			self.refreshEntries()
 
@@ -164,3 +172,4 @@ if __name__ == "__main__":
 	else:
 		w = SnippsGUI()
 		w.main()
+
