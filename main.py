@@ -19,12 +19,15 @@ class SnippsGUI:
 		self.entSelChanged()
 
 	def catNew(self, widget):
+		self.dlgCatPar.set_active(0)
 		res = self.dlgCat.run()
 		self.dlgCat.hide()
 		text = self.dlgCatText.get_text()
 		self.dlgCatText.set_text("")
 		if res == 0:
-			self.db.catAdd(text)
+			cbiter = self.dlgCatPar.get_active_iter()
+			parid = self.dlgLsCatCombo.get(cbiter, 0)[0]
+			self.db.catAdd(text, parid)
 			self.refreshCategories()
 			self.catSelChanged()
 
@@ -107,10 +110,15 @@ class SnippsGUI:
 	def refreshCategories(self, parentid=0, parentnode=None):
 		if parentid == 0:
 			self.tsCat.clear()
+			self.dlgLsCatCombo.clear()
+			self.dlgLsCatCombo.append([0, "--- Root ---"])
 		for c in self.db.catGet(parentid):
-			node = self.tsCat.append(parentnode, c)
+			node = self.tsCat.append(parentnode, c[0:2])
+			self.dlgLsCatCombo.append(c[0:2])
 			self.refreshCategories(c[0], node)
-		if parentid == 0:	
+			if int(c[2]) == 1:
+				self.tvCat.expand_row(self.tsCat.get_path(node), False)
+		if parentid == 0:
 			self.catSelChanged()
 
 	def catSelChanged(self, widget=None):
@@ -135,12 +143,15 @@ class SnippsGUI:
 		builder.add_from_file("newcat.glade")
 		self.dlgCat = builder.get_object("dlgCat")
 		self.dlgCatText = builder.get_object("dlgCatText")
+		self.dlgCatPar = builder.get_object("dlgCatPar")
+		self.dlgLsCatCombo = builder.get_object("dlgLsCatCombo")
 		self.window = builder.get_object("mainWindow")
 		self.window.connect("delete-event", self.destroy)
 		self.window.show()
 
 		self.db = DataProvider()
 
+		self.tvCat = builder.get_object("tvCat")
 		self.tsCat = builder.get_object("tsCat")
 		self.selCat = builder.get_object("selCat")
 		self.selCat.connect("changed", self.catSelChanged)

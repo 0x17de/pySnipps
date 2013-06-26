@@ -13,7 +13,7 @@ class DataProvider:
 
 	def initDB(self):
 		if (not self.tableExists("categories")):
-			self.db.execute("CREATE TABLE 'categories' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT, 'parent' INTEGER )")
+			self.db.execute("CREATE TABLE 'categories' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT, 'parent' INTEGER, 'autoexpand' INTEGER )")
 		if (not self.tableExists("snipps")):
 			self.db.execute("CREATE TABLE 'snipps' ( 'id' INTEGER PRIMARY KEY, 'cat_id' INTEGER, 'name' TEXT, 'code' TEXT, 'lang' INTEGER )")
 		if (not self.tableExists("langs")):
@@ -25,8 +25,8 @@ class DataProvider:
 
 	def catGet(self, parent=0):
 		ret = []
-		for row in self.db.execute("SELECT id, name FROM categories WHERE parent = ? ORDER BY name ASC", (parent,)):
-			ret.append([int(row[0]), row[1]])
+		for row in self.db.execute("SELECT id, name, autoexpand FROM categories WHERE parent = ? ORDER BY name ASC", (parent,)):
+			ret.append([int(row[0]), row[1], row[2]])
 		return ret
 
 	def snipTagsGet(self, id, bAsString = False):
@@ -118,13 +118,13 @@ class DataProvider:
 			ret.append([int(row[0]), row[1]])
 		return ret
 
-	def catAdd(self, text):
-		self.db.execute("INSERT INTO categories (name, parent) VALUES (?, '0')", (text,))
+	def catAdd(self, text, parid):
+		self.db.execute("INSERT INTO categories (name, parent, autoexpand) VALUES (?, ?, '0')", (text,parid))
 		self.db.commit()
 
 	def catDel(self, id, bCommitDB = True):
 		for cat in self.db.execute("SELECT id FROM categories WHERE parent = ?", (id,)):
-			catDel(selof, id, False)
+			self.catDel(cat[0], False)
 
 		self.db.execute("DELETE FROM categories WHERE id = ?", (id,))
 		self.snipsOfCatDel(id, False)
