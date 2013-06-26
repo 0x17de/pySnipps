@@ -1,3 +1,5 @@
 local.db
+build
+dist
 core
 *.pyc
