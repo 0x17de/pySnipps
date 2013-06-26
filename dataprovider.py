@@ -23,9 +23,9 @@ class DataProvider:
 		if (not self.tableExists("tags")):
 			self.db.execute("CREATE TABLE 'tags' ( 'id' INTEGER PRIMARY KEY, 'tag_id' INTEGER, 'snip_id' INTEGER )")
 
-	def catGet(self):
+	def catGet(self, parent=0):
 		ret = []
-		for row in self.db.execute("SELECT id, name FROM categories ORDER BY name ASC"):
+		for row in self.db.execute("SELECT id, name FROM categories WHERE parent = ? ORDER BY name ASC", (parent,)):
 			ret.append([int(row[0]), row[1]])
 		return ret
 

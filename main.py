@@ -104,12 +104,14 @@ class SnippsGUI:
 			self.selEntID = model.get_value(iter, 0)
 		self.refreshSnipp()
 
-	def refreshCategories(self):
-		cat = self.db.catGet()
-		self.lsCat.clear()
-		for c in cat:
-			self.lsCat.append(c)
-		self.catSelChanged()
+	def refreshCategories(self, parentid=0, parentnode=None):
+		if parentid == 0:
+			self.tsCat.clear()
+		for c in self.db.catGet(parentid):
+			node = self.tsCat.append(parentnode, c)
+			self.refreshCategories(c[0], node)
+		if parentid == 0:	
+			self.catSelChanged()
 
 	def catSelChanged(self, widget=None):
 		(model, iter) = self.selCat.get_selected()
@@ -139,7 +141,7 @@ class SnippsGUI:
 
 		self.db = DataProvider()
 
-		self.lsCat = builder.get_object("lsCat")
+		self.tsCat = builder.get_object("tsCat")
 		self.selCat = builder.get_object("selCat")
 		self.selCat.connect("changed", self.catSelChanged)
 		actCatNew = builder.get_object("actCatNew")

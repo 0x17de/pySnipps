@@ -7,14 +7,6 @@
   <object class="GtkAction" id="actSnipDelete"/>
   <object class="GtkAction" id="actSnipNew"/>
   <object class="GtkAction" id="actSnipSave"/>
-  <object class="GtkListStore" id="lsCat">
-    <columns>
-      <!-- column-name id -->
-      <column type="gint"/>
-      <!-- column-name name -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkListStore" id="lsSnipps">
     <columns>
       <!-- column-name id -->
@@ -82,13 +74,13 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="vexpand">True</property>
-                <property name="model">lsCat</property>
+                <property name="model">tsCat</property>
                 <child internal-child="selection">
                   <object class="GtkTreeSelection" id="selCat"/>
                 </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="treeviewcolumn2">
-                    <property name="title" translatable="yes">Category</property>
+                    <property name="title" translatable="yes">Name</property>
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext2"/>
                       <attributes>
@@ -375,5 +367,13 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkTreeStore" id="tsCat">
+    <columns>
+      <!-- column-name id -->
+      <column type="gint"/>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>
