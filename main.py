@@ -115,8 +115,16 @@ class SnippsGUI:
 		(model, iter) = self.selCat.get_selected()
 		if iter is None:
 			self.selCatID = None
+			self.snipName.set_sensitive(False)
+			self.snipLang.set_sensitive(False)
+			self.snipTags.set_sensitive(False)
+			self.snipCode.set_sensitive(False)
 		else:
 			self.selCatID = model.get_value(iter, 0)
+			self.snipName.set_sensitive(True)
+			self.snipLang.set_sensitive(True)
+			self.snipTags.set_sensitive(True)
+			self.snipCode.set_sensitive(True)
 		self.refreshEntries()
 
 	def __init__(self):
