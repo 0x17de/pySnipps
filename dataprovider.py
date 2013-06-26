@@ -13,7 +13,7 @@ class DataProvider:
 
 	def initDB(self):
 		if (not self.tableExists("categories")):
-			self.db.execute("CREATE TABLE 'categories' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT )")
+			self.db.execute("CREATE TABLE 'categories' ( 'id' INTEGER PRIMARY KEY, 'name' TEXT, 'parent' INTEGER )")
 		if (not self.tableExists("snipps")):
 			self.db.execute("CREATE TABLE 'snipps' ( 'id' INTEGER PRIMARY KEY, 'cat_id' INTEGER, 'name' TEXT, 'code' TEXT, 'lang' INTEGER )")
 		if (not self.tableExists("langs")):
@@ -100,14 +100,17 @@ class DataProvider:
 		    for line in self.db.iterdump():
 		        f.write('%s\n' % line)
 
-	def snipDel(self, id):
+	def snipDel(self, id, bCommitDB = True):
 		self.db.execute("DELETE FROM snipps WHERE id = ?", (id,))
 		self.db.execute("DELETE FROM tags WHERE snip_id = ?", (id,))
-		self.db.commit()
+		if bCommitDB:
+			self.db.commit()
 
-	def snipsOfCatDel(self, id):
-		self.db.execute("DELETE FROM snipps WHERE cat_id = ?", (id,))
-		self.db.commit()
+	def snipsOfCatDel(self, id, bCommitDB = True):
+		for cat in self.db.execute("SELECT id FROM snipps WHERE cat_id = ?", (id,)):
+			self.snipDel(cat[0], False)
+		if bCommitDB:
+			self.db.commit()
 
 	def entGet(self, id):
 		ret = []
@@ -116,13 +119,17 @@ class DataProvider:
 		return ret
 
 	def catAdd(self, text):
-		self.db.execute("INSERT INTO categories (name) VALUES (?)", (text,))
+		self.db.execute("INSERT INTO categories (name, parent) VALUES (?, '0')", (text,))
 		self.db.commit()
 
-	def catDel(self, id):
+	def catDel(self, id, bCommitDB = True):
+		for cat in self.db.execute("SELECT id FROM categories WHERE parent = ?", (id,)):
+			catDel(selof, id, False)
+
 		self.db.execute("DELETE FROM categories WHERE id = ?", (id,))
-		self.db.commit()
-		self.snipsOfCatDel(id)
+		self.snipsOfCatDel(id, False)
+		if bCommitDB:
+			self.db.commit()
 
 	def __del__(self):
 		self.db.close()
