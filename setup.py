@@ -12,5 +12,5 @@ setup(name='pySnipps',
       packages=["pySnipps"],
 	  package_dir={'pySnipps': 'src/pySnipps'},
 	  package_data={'pySnipps': ['resources/*']},
-	  install_requires=['pyobject >= 3'],
+	  install_requires=['pygobject >= 3'],
      )
