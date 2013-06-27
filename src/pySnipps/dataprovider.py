@@ -2,7 +2,7 @@ import sqlite3
 
 class DataProvider:
 	def __init__(self):
-		self.db = sqlite3.connect("local.db")
+		self.db = sqlite3.connect("pysnipps.db")
 		self.initDB()
 
 	def tableExists(self, tablename):
