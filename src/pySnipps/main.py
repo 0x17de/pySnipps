@@ -1,5 +1,6 @@
 #!/usr/bin/python2
 
+import os
 import sys
 from gi.repository import Gtk, Gdk
 from dataprovider import *
@@ -139,7 +140,8 @@ class SnippsGUI:
 
 	def __init__(self):
 		builder = Gtk.Builder()
-		builder.add_from_file("layout.glade")
+		layoutpath=os.path.join(os.path.dirname(__file__), 'resources/layout.glade')
+		builder.add_from_file(layoutpath)
 		self.dlgCat = builder.get_object("dlgCat")
 		self.dlgCatText = builder.get_object("dlgCatText")
 		self.dlgCatPar = builder.get_object("dlgCatPar")
@@ -184,7 +186,7 @@ class SnippsGUI:
 		Gtk.main()
 	
 
-if __name__ == "__main__":
+def run():
 	if len(sys.argv) >= 3:
 		if sys.argv[1] == 'dump':
 			db = DataProvider()

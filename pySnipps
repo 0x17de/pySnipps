@@ -1,0 +1,6 @@
+#!/usr/bin/python2
+
+import pySnipps.main
+
+pySnipps.main.run()
+
