@@ -1,8 +1,11 @@
+import os
 import sqlite3
 
 class DataProvider:
 	def __init__(self):
-		self.db = sqlite3.connect("pysnipps.db")
+		home = os.path.expanduser("~")
+		dbpath = os.path.join(home, 'pysnipps.db')
+		self.db = sqlite3.connect(dbpath)
 		self.initDB()
 
 	def tableExists(self, tablename):
