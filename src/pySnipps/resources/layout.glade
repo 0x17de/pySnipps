@@ -214,6 +214,9 @@
                     <property name="can_focus">True</property>
                     <property name="vexpand">True</property>
                     <property name="model">tsCat</property>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection" id="selCat"/>
+                    </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                         <property name="title" translatable="yes">Name</property>
