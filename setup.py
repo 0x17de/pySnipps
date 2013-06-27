@@ -8,5 +8,7 @@ setup(name='pySnipps',
       author='Manuel Herrmann',
       author_email='pysnipps@icetruck.de',
       url='http://pysnipps.icetruck.de/',
-      packages=[],
+      packages=["pySnipps"],
+	  package_dir={'pySnipps': 'src/pySnipps'},
+	  package_data={'pySnipps': ['resources/*']},
      )

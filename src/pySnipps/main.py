@@ -140,7 +140,6 @@ class SnippsGUI:
 	def __init__(self):
 		builder = Gtk.Builder()
 		builder.add_from_file("layout.glade")
-		builder.add_from_file("newcat.glade")
 		self.dlgCat = builder.get_object("dlgCat")
 		self.dlgCatText = builder.get_object("dlgCatText")
 		self.dlgCatPar = builder.get_object("dlgCatPar")
