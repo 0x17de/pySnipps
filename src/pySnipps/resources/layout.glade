@@ -13,6 +13,22 @@
   <object class="GtkAction" id="actSnipDelete"/>
   <object class="GtkAction" id="actSnipNew"/>
   <object class="GtkAction" id="actSnipSave"/>
+  <object class="GtkAccelGroup" id="acPopup"/>
+  <object class="GtkAction" id="catAutoexpand">
+    <property name="label" translatable="yes">Autoexpand</property>
+  </object>
+  <object class="GtkMenu" id="catPopup">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="accel_group">acPopup</property>
+    <child>
+      <object class="GtkCheckMenuItem" id="Autoexpan">
+        <property name="related_action">catAutoexpand</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+  </object>
   <object class="GtkListStore" id="dlgLsCatCombo">
     <columns>
       <!-- column-name id -->

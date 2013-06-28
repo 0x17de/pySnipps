@@ -122,6 +122,19 @@ class SnippsGUI:
 		if parentid == 0:
 			self.catSelChanged()
 
+	def catPress(self, widget, event):
+		if event.button == 3:
+			x = int(event.x)
+			y = int(event.y)
+			time = event.time
+			pthinfo = widget.get_path_at_pos(x, y)
+			if pthinfo is not None:
+				path, col, cellx, celly = pthinfo
+				widget.grab_focus()
+				widget.set_cursor(path, col, 0)
+				self.popup.popup(None, None, None, None, event.button, time)
+			return True
+
 	def catSelChanged(self, widget=None):
 		(model, iter) = self.selCat.get_selected()
 		if iter is None:
@@ -150,9 +163,12 @@ class SnippsGUI:
 		self.window.connect("delete-event", self.destroy)
 		self.window.show()
 
+		self.popup = builder.get_object("catPopup")
+
 		self.db = DataProvider()
 
 		self.tvCat = builder.get_object("tvCat")
+		self.tvCat.connect("button-press-event", self.catPress)
 		self.tsCat = builder.get_object("tsCat")
 		self.selCat = builder.get_object("selCat")
 		self.selCat.connect("changed", self.catSelChanged)
@@ -194,4 +210,8 @@ def run():
 	else:
 		w = SnippsGUI()
 		w.main()
+
+if __name__ == "__main__":
+	run()
+
 
