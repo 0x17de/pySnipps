@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='pySnipps',
-      version='0.4',
+      version='0.5',
       description='A snippet tool written in python',
       author='Manuel Herrmann',
       author_email='pysnipps@icetruck.de',
