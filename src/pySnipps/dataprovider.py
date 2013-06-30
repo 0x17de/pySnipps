@@ -29,7 +29,7 @@ class DataProvider:
 	def catGet(self, parent=0):
 		ret = []
 		for row in self.db.execute("SELECT id, name, autoexpand FROM categories WHERE parent = ? ORDER BY name ASC", (parent,)):
-			ret.append([int(row[0]), row[1], row[2]])
+			ret.append([int(row[0]), row[1], int(row[2])])
 		return ret
 
 	def catIsAutoexpand(self, catid):
@@ -38,6 +38,10 @@ class DataProvider:
 		if row is None:
 			return None
 		return True if int(row[0]) == 1 else False
+
+	def catSetAutoexpand(self, catid, bActive):
+		self.db.execute("UPDATE categories SET autoexpand = ? WHERE id = ?", (1 if bActive else 0, catid))
+		self.db.commit()
 
 	def snipTagsGet(self, id, bAsString = False):
 		dbtagids = []

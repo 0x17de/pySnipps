@@ -136,6 +136,9 @@ class SnippsGUI:
 				self.popup.popup(None, None, None, None, event.button, time)
 			return True
 
+	def catToggleAutoexpand(self, widget=None):
+		self.db.catSetAutoexpand(self.selCatID, self.popAutoexpand.get_active())
+
 	def catSelChanged(self, widget=None):
 		(model, iter) = self.selCat.get_selected()
 		if iter is None:
@@ -165,6 +168,8 @@ class SnippsGUI:
 		self.window.show()
 
 		self.popup = builder.get_object("catPopup")
+		actCatAutoexpand = builder.get_object("actCatAutoexpand")
+		actCatAutoexpand.connect("activate", self.catToggleAutoexpand)
 		self.popAutoexpand = builder.get_object("popAutoexpand")
 
 		self.db = DataProvider()
