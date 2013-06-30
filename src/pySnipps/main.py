@@ -132,6 +132,7 @@ class SnippsGUI:
 				path, col, cellx, celly = pthinfo
 				widget.grab_focus()
 				widget.set_cursor(path, col, 0)
+				self.popAutoexpand.set_active(self.db.catIsAutoexpand(self.selCatID))
 				self.popup.popup(None, None, None, None, event.button, time)
 			return True
 
@@ -164,6 +165,7 @@ class SnippsGUI:
 		self.window.show()
 
 		self.popup = builder.get_object("catPopup")
+		self.popAutoexpand = builder.get_object("popAutoexpand")
 
 		self.db = DataProvider()
 

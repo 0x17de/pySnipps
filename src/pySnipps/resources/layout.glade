@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkAccelGroup" id="acPopup"/>
   <object class="GtkAction" id="actCatCancel">
     <property name="label" translatable="yes">Cancel</property>
   </object>
@@ -13,7 +14,6 @@
   <object class="GtkAction" id="actSnipDelete"/>
   <object class="GtkAction" id="actSnipNew"/>
   <object class="GtkAction" id="actSnipSave"/>
-  <object class="GtkAccelGroup" id="acPopup"/>
   <object class="GtkAction" id="catAutoexpand">
     <property name="label" translatable="yes">Autoexpand</property>
   </object>
@@ -22,7 +22,7 @@
     <property name="can_focus">False</property>
     <property name="accel_group">acPopup</property>
     <child>
-      <object class="GtkCheckMenuItem" id="Autoexpan">
+      <object class="GtkCheckMenuItem" id="popAutoexpand">
         <property name="related_action">catAutoexpand</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>

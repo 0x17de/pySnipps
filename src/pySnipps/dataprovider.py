@@ -32,6 +32,13 @@ class DataProvider:
 			ret.append([int(row[0]), row[1], row[2]])
 		return ret
 
+	def catIsAutoexpand(self, catid):
+		res = self.db.execute("SELECT autoexpand FROM categories WHERE id = ?", (catid,))
+		row = res.fetchone()
+		if row is None:
+			return None
+		return True if int(row[0]) == 1 else False
+
 	def snipTagsGet(self, id, bAsString = False):
 		dbtagids = []
 		if bAsString:
