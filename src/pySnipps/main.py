@@ -122,6 +122,19 @@ class SnippsGUI:
 		if parentid == 0:
 			self.catSelChanged()
 
+	def snippsPress(self, widget, event):
+		if event.button == 2:
+			x = int(event.x)
+			y = int(event.y)
+			time = event.time
+			pthinfo = widget.get_path_at_pos(x, y)
+			if pthinfo is not None:
+				path, col, cellx, celly = pthinfo
+				widget.grab_focus()
+				widget.set_cursor(path, col, 0)
+				self.snipCopy()
+			return True
+
 	def catPress(self, widget, event):
 		if event.button == 3:
 			x = int(event.x)
@@ -191,6 +204,8 @@ class SnippsGUI:
 		self.snipTags = builder.get_object("snipTags")
 		self.snipCode = builder.get_object("snipCode")
 
+		self.tvSnipps = builder.get_object("tvSnipps")
+		self.tvSnipps.connect("button-press-event", self.snippsPress)
 		self.lsSnipps = builder.get_object("lsSnipps")
 		actSnipNew = builder.get_object("actSnipNew")
 		actSnipNew.connect("activate", self.snipNew)
